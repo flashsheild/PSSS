@@ -1,0 +1,84 @@
+#include <iostream>
+#include <stdexcept>
+#include <string>
+
+class Overdue : public std::exception {
+public:
+    const char* what() const noexcept override {
+        return "Error: You have overdue books!";
+    }
+};
+
+class InvalidBookID : public std::exception {
+public:
+    const char* what() const noexcept override {
+        return "Error: Invalid book ID!";
+    }
+};
+
+class InvalidMemberID : public std::exception {
+public:
+    const char* what() const noexcept override {
+        return "Error: Invalid member ID!";
+    }
+};
+
+class BookAlreadyCheckedOut : public std::exception {
+public:
+    const char* what() const noexcept override {
+        return "Error: Book is already checked out!";
+    }
+};
+
+class ExceededBorrowLimit : public std::exception {
+public:
+    const char* what() const noexcept override {
+        return "Error: You have reached your borrowing limit!";
+    }
+};
+
+
+void checkOutBook(int memberId, int bookId) {
+    if (memberId != 1111) {
+        throw InvalidMemberID();
+    }
+    if (bookId != 7777) {
+        throw InvalidBookID();
+    }
+    
+    std::cout << "Book checked out successfully!" << std::endl;
+}
+
+int main() {
+    int memberId;
+    int bookId;
+
+    std::cout << "Enter Member ID: ";
+    std::cin >> memberId;
+    std::cout << "Enter Book ID: ";
+    std::cin >> bookId;
+
+    try {
+        checkOutBook(memberId, bookId);
+    }
+    catch (const InvalidMemberID& e) {
+        std::cerr << e.what() << std::endl;
+    }
+    catch (const InvalidBookID& e) {
+        std::cerr << e.what() << std::endl;
+    }
+    catch (const Overdue& e) {
+        std::cerr << e.what() << std::endl;
+    }
+    catch (const BookAlreadyCheckedOut& e) {
+        std::cerr << e.what() << std::endl;
+    }
+    catch (const ExceededBorrowLimit& e) {
+        std::cerr << e.what() << std::endl;
+    }
+    catch (const std::exception& e) {
+        std::cerr << "An unknown error occurred: " << e.what() << std::endl;
+    }
+
+    return 0;
+}

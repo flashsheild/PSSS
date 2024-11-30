@@ -1,0 +1,44 @@
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+
+template <typename T>
+class MyVector {
+private:
+    vector<T> elements;
+
+public:
+    void addElement(const T& element) {
+        elements.push_back(element);
+        cout << "Added: " << element << endl;
+    }
+
+    T getElementByIndex(int index) const {
+        if (index >= 0 && index < elements.size()) {
+            return elements[index];
+        } else {
+            cout << "Index out of range" << endl;
+            return T{};
+        }
+    }
+
+    void display() const {
+        cout << "Vector contents: ";
+        for (const auto& element : elements) {
+            cout << element << " ";
+        }
+        cout << endl;
+    }
+};
+
+int main() {
+    MyVector<string> myStringVector;
+    myStringVector.addElement("Apple");
+    myStringVector.addElement("Banana");
+    myStringVector.addElement("Orange");
+    myStringVector.display();
+    cout << "Element at index 1: " << myStringVector.getElementByIndex(1) << endl;
+    cout << "Element at index 5: " << myStringVector.getElementByIndex(5) << endl;
+    return 0;
+}

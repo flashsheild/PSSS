@@ -1,0 +1,124 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Passenger {
+public:
+    string name;
+    int age;
+    string destination;
+    double fare;
+
+    Passenger() {
+        name = "";
+        age = 0;
+        destination = "";
+        fare = 0.0;
+    }
+
+    Passenger(string n, int a, string d, double f) {
+        name = n;
+        age = a;
+        destination = d;
+        fare = f;
+    }
+
+    void display() {
+        cout << "Name: " << name << ", Age: " << age 
+             << ", Destination: " << destination 
+             << ", Fare: " << fare << endl;
+    }
+};
+
+class TicketSystem {
+private:
+    Passenger **passengers;
+    int count;
+    int capacity;
+
+public:
+    TicketSystem(int cap) : count(0), capacity(cap) {
+        passengers = new Passenger*[capacity];
+    }
+
+    void addPassenger(string name, int age, string destination, double fare) {
+        if (count >= capacity) {
+            cout << "Ticket limit reached!" << endl;
+            return;
+        }
+        passengers[count] = new Passenger(name, age, destination, fare);
+        cout << "Ticket booked for " << name << " to " << destination << "." << endl;
+        count++;
+    }
+
+    void displayAllPassengers() {
+        if (count == 0) {
+            cout << "No passengers booked." << endl;
+            return;
+        }
+        cout << "Passenger List:" << endl;
+        for (int i = 0; i < count; i++) {
+            passengers[i]->display();
+        }
+    }
+
+    ~TicketSystem() {
+        for (int i = 0; i < count; i++) {
+            delete passengers[i];
+        }
+        delete[] passengers;
+    }
+};
+
+int main() {
+    int capacity;
+    cout << "Enter the maximum number of passengers: ";
+    cin >> capacity;
+
+    TicketSystem system(capacity);
+    int choice;
+
+    do {
+        cout << "\nMenu:\n";
+        cout << "1. Add Passenger\n";
+        cout << "2. Display All Passengers\n";
+        cout << "3. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1: {
+                string name, destination;
+                int age;
+                double fare;
+                
+                cout << "Enter passenger name: ";
+                cin.ignore();
+                getline(cin, name);
+                
+                cout << "Enter passenger age: ";
+                cin >> age;
+                
+                cout << "Enter destination: ";
+                cin.ignore();
+                getline(cin, destination);
+                
+                cout << "Enter fare: ";
+                cin >> fare;
+
+                system.addPassenger(name, age, destination, fare);
+                break;
+            }
+            case 2:
+                system.displayAllPassengers();
+                break;
+            case 3:
+                cout << "Exiting program." << endl;
+                break;
+            default:
+                cout << "Invalid choice. Please try again." << endl;
+        }
+    } while (choice != 3);
+
+    return 0;
+}

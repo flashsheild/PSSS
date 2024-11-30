@@ -1,0 +1,105 @@
+
+#include<iostream>
+
+using namespace std;
+
+class student
+{
+public:
+    int rollno;
+    float sgpaSEM1, sgpaSEM2, cgpaFY;
+    char name[30], address[30], mobileNo[30];
+    student();               // Constructor
+    ~student();              // Destructor
+    float calculateCGPA();
+    void inputDetails();
+    void displayDetails();
+};
+
+student::student()
+{
+    rollno = 0;
+    sgpaSEM1 = 0.0;
+    sgpaSEM2 = 0.0;
+    cgpaFY = 0.0;
+}
+
+student::~student()
+{
+    cout << "Destructor called for student with roll number: " << rollno << endl;
+}
+
+float student::calculateCGPA()
+{
+    cgpaFY = (sgpaSEM1 + sgpaSEM2) / 2;
+    return cgpaFY;
+}
+
+void student::inputDetails()
+{
+    cout << "Enter student roll number: ";
+    cin.ignore();
+    cin.getline(mobileNo, 30);
+    cout << "Enter student name: ";
+    cin.ignore();
+    cin.getline(name, 30);
+    cout << "Enter student address: ";
+    cin.getline(address, 30);
+    cout << "Enter student mobile number: ";
+    cin >> mobileNo;
+    cout << "Enter the SGPA of SEM 1: ";
+    cin >> sgpaSEM1;
+    cout << "Enter the SGPA of SEM 2: ";
+    cin >> sgpaSEM2;
+}
+
+void student::displayDetails()
+{
+    cout << "\nStudent Details:" << endl;
+    cout << "Roll Number: " << rollno << endl;
+    cout << "Name: " << name << endl;
+    cout << "Address: " << address << endl;
+    cout << "Mobile Number: " << mobileNo << endl;
+    cout << "SGPA SEM 1: " << sgpaSEM1 << endl;
+    cout << "SGPA SEM 2: " << sgpaSEM2 << endl;
+    cout << "CGPA FY: " << cgpaFY << endl;
+}
+
+int main(void)
+{
+    student sd;
+    int choice;
+
+    do
+    {
+        cout << "\nMenu:\n";
+        cout << "1. Input Student Details\n";
+        cout << "2. Calculate CGPA\n";
+        cout << "3. Display Student Details\n";
+        cout << "4. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch(choice)
+        {
+            case 1:
+                sd.inputDetails();
+                break;
+            case 2:
+                sd.calculateCGPA();
+                cout << "CGPA is "<<sd.cgpaFY<<endl;
+                break;
+            case 3:
+                sd.displayDetails();
+                break;
+            case 4:
+                cout << "Exiting...\n";
+                return 0;
+            default:
+                cout << "Invalid choice. Please try again.\n";
+        }
+    }
+	while(choice!=4);
+	
+    return 0;
+}

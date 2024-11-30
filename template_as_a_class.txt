@@ -1,0 +1,36 @@
+// as a class 
+#include<iostream>
+using namespace std;
+
+template <class T>
+class Management
+{
+   public :
+   T name,Book,Author;
+   Management(T Name,T book,T Writer)
+   {
+      name = Name;
+      Book = book;
+      Author = Writer;
+   }
+   void Display() 
+   {
+       cout<<"Book Issue by :  "<<name<<endl;
+       cout<<"Book name is : "<<Book<<endl;
+       cout<<"Author of Book is : "<<Author<<endl;
+
+   } 
+};
+
+int main()
+{
+    string Name,Book,Author;
+    cout<<"Enter Name , Book Name and Author name \n";
+    cin>>Name>>Book>>Author;
+    Management <string> Mobj(Name,Book,Author);
+    Mobj.Display();
+
+
+
+    return 0;
+}

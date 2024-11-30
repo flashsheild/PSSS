@@ -1,0 +1,125 @@
+	#include <iostream>
+#include <string>
+
+using namespace std;
+
+class Staff {
+protected:
+    string name;
+    int id;
+
+public:
+    Staff(string staffName, int staffId) : name(staffName), id(staffId) {}
+
+    void displayInfo() {
+        cout << "Name: " << name << ", ID: " << id << "\n";
+    }
+};
+
+class Nurse : public Staff {
+public:
+    Nurse(string nurseName, int nurseId) : Staff(nurseName, nurseId) {}
+
+    void provideCare() {
+        cout << name << " is providing patient care.\n";
+    }
+};
+
+class Doctor : public Staff {
+protected:
+    string specialization;
+
+public:
+    Doctor(string doctorName, int doctorId, string spec)
+        : Staff(doctorName, doctorId), specialization(spec) {}
+
+    void diagnose() {
+        cout << name << " is diagnosing patients in " << specialization << ".\n";
+    }
+};
+
+class HeadDoctor : public Doctor {
+public:
+    HeadDoctor(string headDoctorName, int headDoctorId, string spec)
+        : Doctor(headDoctorName, headDoctorId, spec) {}
+
+    void overseeHospital() {
+        cout << name << " is overseeing the hospital operations.\n";
+    }
+};
+
+class SurgerySkills {
+public:
+    void assistInSurgery() {
+        cout << "Assisting in surgery.\n";
+    }
+};
+
+class SurgicalNurse : public Nurse, public SurgerySkills {
+public:
+    SurgicalNurse(string nurseName, int nurseId) : Nurse(nurseName, nurseId) {}
+
+    void prepareForSurgery() {
+        cout << name << " is preparing for surgery.\n";
+        assistInSurgery();
+    }
+};
+
+class Receptionist : public Staff {
+public:
+    Receptionist(string receptionistName, int receptionistId)
+        : Staff(receptionistName, receptionistId) {}
+
+    void scheduleAppointments() {
+        cout << name << " is scheduling appointments.\n";
+    }
+};
+
+class Housekeeper : public Staff {
+public:
+    Housekeeper(string housekeeperName, int housekeeperId)
+        : Staff(housekeeperName, housekeeperId) {}
+
+    void cleanRooms() {
+        cout << name << " is cleaning patient rooms.\n";
+    }
+};
+
+int main() {
+    Nurse nurse("Manish", 101);
+    Doctor doctor("Dr. Singh", 201, "Cardiology");
+    HeadDoctor headDoctor("Dr. Patel", 301, "Neurology");
+    SurgicalNurse surgicalNurse("Vedant", 102);
+    Receptionist receptionist("Mohit", 401);
+    Housekeeper housekeeper("Omkar", 501);
+
+    cout << " Hospital Staff Information \n\n";
+
+    cout << "Nurse:\n";
+    nurse.displayInfo();
+    nurse.provideCare();
+
+    cout << "\nDoctor:\n";
+    doctor.displayInfo();
+    doctor.diagnose();
+
+    cout << "\nHead Doctor:\n";
+    headDoctor.displayInfo();
+    headDoctor.diagnose();
+    headDoctor.overseeHospital();
+
+    cout << "\nSurgical Nurse:\n";
+    surgicalNurse.displayInfo();
+    surgicalNurse.provideCare();
+    surgicalNurse.prepareForSurgery();
+
+    cout << "\nReceptionist:\n";
+    receptionist.displayInfo();
+    receptionist.scheduleAppointments();
+
+    cout << "\nHousekeeper:\n";
+    housekeeper.displayInfo();
+    housekeeper.cleanRooms();
+
+    return 0;
+}

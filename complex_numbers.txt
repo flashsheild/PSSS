@@ -1,0 +1,43 @@
+#include<iostream>
+using namespace std;
+
+class complex
+{
+	private:
+		int real,imag;
+	public:
+		complex(int r=0,int i=0)
+		{
+			real=r;
+			imag=i;
+		}
+		void print()
+		{
+			cout<<real<<" + "<<imag<<" i"<<endl;
+		}
+		complex operator - (complex const obj)
+		{
+			complex res;
+			res.real=real - obj.real;
+			res.imag=imag - obj.imag;
+			return res;
+		}
+		complex operator + (complex const add)
+		{
+			complex temp;
+			temp.real=real + add.real;
+			temp.imag=imag + add.imag;
+			return temp;
+		}
+};
+
+int main()
+{
+	int r,i;
+	complex c1(3,5);
+	complex c2(4,3);
+	complex c3(2,4);
+	complex c4=c1+c2-c3;
+	c4.print();
+	return 0;
+}

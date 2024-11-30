@@ -1,0 +1,50 @@
+#include <iostream>
+using namespace std;
+
+class Temperature {
+private:
+    double celsius;
+
+public:
+    Temperature(double tempCelsius = 0.0) : celsius(tempCelsius) {}
+
+    void displayCelsius() const {
+        cout << "Temperature in Celsius: " << celsius << " Â°C" << endl;
+    }
+
+    operator double() const {
+        return celsius;
+    }
+
+    Temperature& operator=(double tempCelsius) {
+        celsius = tempCelsius;
+        return *this;
+    }
+
+    double toFahrenheit() const {
+        return celsius * 9 / 5 + 32;
+    }
+
+    double toCelsius(double tempFahrenheit) const {
+        return (tempFahrenheit - 32) * 5 / 9;
+    }
+};
+
+int main() {
+    Temperature tempCelsius(25.0);
+    cout << "Original ";
+    tempCelsius.displayCelsius();
+
+    double tempValue = static_cast<double>(tempCelsius);
+    cout << "As double (Celsius): " << tempValue << " Â°C" << endl;
+
+    Temperature temp2;
+    temp2 = 32.0;
+    cout << "Converted ";
+    temp2.displayCelsius();
+
+    cout << "Temperature in Fahrenheit: " << tempCelsius.toFahrenheit() << " Â°F" << endl;
+    cout << "Conversion from Fahrenheit to Celsius: " << tempCelsius.toCelsius(77.0) << " Â°C" << endl;
+
+    return 0;
+}

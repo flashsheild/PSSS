@@ -1,0 +1,17 @@
+// function as a template
+#include<iostream>
+using namespace std;
+template<typename t>
+
+t Addition(t no1,t no2)
+{
+    return (no1+no2);
+}
+
+int main()
+{
+   int res =  Addition<int>(11,21);
+   cout<<"Addition is : "<<res<<endl;
+
+    return 0;
+}

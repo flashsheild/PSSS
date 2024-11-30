@@ -1,0 +1,156 @@
+#include <iostream>
+
+using namespace std;
+
+template <typename T1, typename T2> // Template declaration with T1 for book ID and T2 for title/author
+class Library {
+private:
+    struct Book {
+        T1 id;
+        T2 title[100];  // Using C-style string for title
+        T2 author[100]; // Using C-style string for author
+
+        Book(T1 bookId, const T2& bookTitle, const T2& bookAuthor) {
+            id = bookId;
+            strcpy(title, bookTitle);  // Copy C-string title
+            strcpy(author, bookAuthor); // Copy C-string author
+        }
+    };
+
+    static const int MAX_BOOKS = 10;
+    Book* books[MAX_BOOKS];
+    int bookCount = 0;
+    bool borrowed[MAX_BOOKS];  // To track if a book is borrowed or not
+
+public:
+    Library() {
+        for (int i = 0; i < MAX_BOOKS; ++i) {
+            books[i] = nullptr;
+            borrowed[i] = false;  // Initially, no books are borrowed
+        }
+    }
+
+    // Add a new book to the library
+    void addBook(T1 id, const T2& title, const T2& author) {
+        if (bookCount < MAX_BOOKS) {
+            books[bookCount++] = new Book(id, title, author);
+            cout << "Book added: " << title << " by " << author << "\n";
+        } else {
+            cout << "Library is full, can't add more books!\n";
+        }
+    }
+
+    // Display all available books
+    void displayBooks() const {
+        cout << "\nAvailable Books:\n";
+        for (int i = 0; i < bookCount; ++i) {
+            if (!borrowed[i]) {  // Only show if not borrowed
+                cout << "ID: " << books[i]->id << ", Title: " << books[i]->title
+                     << ", Author: " << books[i]->author << "\n";
+            }
+        }
+    }
+
+    // Borrow a book
+    void borrowBook(T1 id) {
+        bool found = false;
+        for (int i = 0; i < bookCount; ++i) {
+            if (books[i]->id == id) {
+                found = true;
+                if (!borrowed[i]) {  // Check if the book is not already borrowed
+                    borrowed[i] = true;
+                    cout << "Book ID " << id << " borrowed.\n";
+                } else {
+                    cout << "Book ID " << id << " is already borrowed.\n";
+                }
+                break;
+            }
+        }
+        if (!found) {
+            cout << "Book ID " << id << " not found in the library.\n";
+        }
+    }
+
+    // Return a borrowed book
+    void returnBook(T1 id) {
+        bool found = false;
+        for (int i = 0; i < bookCount; ++i) {
+            if (books[i]->id == id) {
+                found = true;
+                if (borrowed[i]) {
+                    borrowed[i] = false;
+                    cout << "Book ID " << id << " returned.\n";
+                } else {
+                    cout << "Book ID " << id << " was not borrowed.\n";
+                }
+                break;
+            }
+        }
+        if (!found) {
+            cout << "Book ID " << id << " not found in the library.\n";
+        }
+    }
+
+    // Destructor to clean up dynamically allocated memory
+    ~Library() {
+        for (int i = 0; i < bookCount; ++i) {
+            delete books[i];
+        }
+    }
+};
+
+int main() {
+    Library<int, char[]> library;  // Using int for ID and char[] for title/author
+    int choice;
+    int id;
+    char title[100], author[100];
+
+    while (true) {
+        cout << "\nLibrary Menu:\n";
+        cout << "1. Add Book\n";
+        cout << "2. Display Books\n";
+        cout << "3. Borrow Book\n";
+        cout << "4. Return Book\n";
+        cout << "5. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                cout << "Enter Book ID: ";
+                cin >> id;
+                cin.ignore(); // To ignore the newline character left by cin
+                cout << "Enter Book Title: ";
+                cin.getline(title, 100);  // Use cin.getline to take full title as input
+                cout << "Enter Book Author: ";
+                cin.getline(author, 100); // Use cin.getline to take full author name as input
+                library.addBook(id, title, author);
+                break;
+
+            case 2:
+                library.displayBooks();
+                break;
+
+            case 3:
+                cout << "Enter Book ID to borrow: ";
+                cin >> id;
+                library.borrowBook(id);
+                break;
+
+            case 4:
+                cout << "Enter Book ID to return: ";
+                cin >> id;
+                library.returnBook(id);
+                break;
+
+            case 5:
+                cout << "Exiting the Library System.\n";
+                return 0;
+
+            default:
+                cout << "Invalid choice, please try again.\n";
+        }
+    }
+
+    return 0;
+}

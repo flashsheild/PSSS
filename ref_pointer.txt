@@ -1,0 +1,156 @@
+include <iostream>
+#include <string>
+
+using namespace std;
+
+class Reservation {
+private:
+    string customerName;
+    int tableNumber;
+    string reservationTime;
+    Reservation* next;
+
+public:
+    Reservation(const string& name, int table, const string& time) 
+        : customerName(name), tableNumber(table), reservationTime(time), next(nullptr) {}
+
+    void setNext(Reservation* nextReservation) {
+        next = nextReservation;
+    }
+
+    Reservation* getNext() const {
+        return next;
+    }
+
+    const string& getName() const {
+        return customerName;
+    }
+
+    int getTableNumber() const {
+        return tableNumber;
+    }
+
+    const string& getReservationTime() const {
+        return reservationTime;
+    }
+};
+
+class ReservationSystem {
+private:
+    Reservation* head;
+
+public:
+    ReservationSystem() : head(nullptr) {}
+
+    ~ReservationSystem() {
+        Reservation* current = head;
+        while (current != nullptr) {
+            Reservation* toDelete = current;
+            current = current->getNext();
+            delete toDelete;
+        }
+    }
+
+    void addReservation(const string& name, int table, const string& time) {
+        Reservation* newReservation = new Reservation(name, table, time);
+
+        if (head == nullptr) {
+            head = newReservation;
+        } else {
+            Reservation* current = head;
+            while (current->getNext() != nullptr) {
+                current = current->getNext();
+            }
+            current->setNext(newReservation);
+        }
+        cout << "Reservation added successfully.\n";
+    }
+
+    void cancelReservation(const string& name) {
+        Reservation* current = head;
+        Reservation* previous = nullptr;
+
+        while (current != nullptr && current->getName() != name) {
+            previous = current;
+            current = current->getNext();
+        }
+
+        if (current == nullptr) {
+            cout << "Reservation not found.\n";
+            return;
+        }
+
+        if (previous == nullptr) {
+            head = current->getNext();
+        } else {
+            previous->setNext(current->getNext());
+        }
+
+        delete current;
+        cout << "Reservation cancelled successfully.\n";
+    }
+
+    void viewReservations() const {
+        if (head == nullptr) {
+            cout << "No reservations available.\n";
+            return;
+        }
+
+        Reservation* current = head;
+        while (current != nullptr) {
+            cout << "Customer Name: " << current->getName()
+                 << ", Table Number: " << current->getTableNumber()
+                 << ", Reservation Time: " << current->getReservationTime() << "\n";
+            current = current->getNext();
+        }
+    }
+};
+
+int main() {
+    ReservationSystem system;
+    int choice;
+
+    do {
+        cout << "\nRestaurant Reservation System\n";
+        cout << "1. Add Reservation\n";
+        cout << "2. Cancel Reservation\n";
+        cout << "3. View Reservations\n";
+        cout << "4. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1: {
+                string name, time;
+                int table;
+                cout << "Enter customer name: ";
+                cin.ignore();
+                getline(cin, name);
+                cout << "Enter table number: ";
+                cin >> table;
+                cout << "Enter reservation time : ";
+                cin >> time;
+                system.addReservation(name, table, time);
+                break;
+            }
+            case 2: {
+                string name;
+                cout << "Enter customer name to cancel reservation: ";
+                cin.ignore();
+                getline(cin, name);
+                system.cancelReservation(name);
+                break;
+            }
+            case 3:
+                system.viewReservations();
+                break;
+            case 4:
+                cout << "Exiting...\n";
+                break;
+            default:
+                cout << "Invalid choice!\n";
+        }
+    } while (choice != 4);
+
+    return 0;
+}

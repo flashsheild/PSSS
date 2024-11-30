@@ -1,0 +1,78 @@
+#include<iostream>
+#include<string>
+using namespace std;
+
+
+class account
+{
+private:
+string account_no;
+double balance;
+
+public:
+account()
+{
+account_no=" ";
+balance=0;
+}
+account(string acc_no, double initial_bal)
+{
+this->account_no=acc_no;
+this->balance=initial_bal;
+}
+
+inline void deposit(double amount)
+{
+if(amount>0)
+{
+balance+=amount;
+cout<<"Deposited"<<amount<<"to account"<<account_no<<endl;
+}
+else
+{
+cout<<"Invalid Deposited amount!"<<endl;
+}
+}
+
+inline void withdraw(double amount)
+{
+if(amount>0 && amount<=balance)
+{
+balance-=amount;
+cout<<"Withdraw"<<amount<<"from account"<<account_no<<endl;
+}
+else
+{
+cout<<"Invalid Withdraw amount!"<<endl;
+}
+}
+friend class bank;
+
+};
+
+class bank
+{
+public:
+double get_balance(account ob)
+{
+  return ob.balance;
+}
+};
+
+int main()
+{
+account obj;
+bank obj1;
+string acc_no;
+double initial_bal,amount;
+
+cout<<"Enter acc no, bal, deposit amt \n";
+cin>>acc_no;
+cin>>initial_bal;
+cin>>amount;
+account ob2(acc_no, initial_bal);
+obj.deposit(amount);
+obj.withdraw(amount);
+obj1.get_balance(obj);
+return 0;
+}

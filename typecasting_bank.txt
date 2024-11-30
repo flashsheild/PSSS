@@ -1,0 +1,90 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class BankAccount {
+private:
+    double balance;
+
+public:
+    BankAccount(double balance = 0.0) : balance(balance) {}
+
+    void deposit(double amount) {
+        balance += amount;
+    }
+
+    void withdraw(double amount) {
+        if (amount <= balance) {
+            balance -= amount;
+        } else {
+            cout << "Insufficient balance!" << endl;
+        }
+    }
+
+    double getBalance() const {
+        return balance;
+    }
+
+    void display() const {
+        cout << "Account Balance: $" << balance << endl;
+    }
+};
+
+class ForeignAccount {
+private:
+    float foreignBalance;
+
+public:
+    ForeignAccount(float foreignBalance = 0.0) : foreignBalance(foreignBalance) {}
+
+    void depositForeignCurrency(float amount) {
+        foreignBalance += amount;
+    }
+
+    void withdrawForeignCurrency(float amount) {
+        if (amount <= foreignBalance) {
+            foreignBalance -= amount;
+        } else {
+            cout << "Insufficient foreign balance!" << endl;
+        }
+    }
+
+    float getForeignBalance() const {
+        return foreignBalance;
+    }
+
+    void display() const {
+        cout << "Foreign Account Balance: " << foreignBalance << " units" << endl;
+    }
+
+    operator BankAccount() const {
+        return BankAccount(foreignBalance * 10);
+    }
+};
+
+int main() {
+    BankAccount bankAcc(1000.0);
+    ForeignAccount foreignAcc(50.0);
+
+    cout << "Before conversion:" << endl;
+    bankAcc.display(); 
+    foreignAcc.display();
+
+    bankAcc.deposit(500);  
+    foreignAcc.depositForeignCurrency(25.0);  
+
+    cout << "\nAfter deposits:" << endl;
+    bankAcc.display();
+    foreignAcc.display();
+
+    bankAcc = foreignAcc; 
+    
+    cout << "\nAfter ForeignAccount is converted to BankAccount:" << endl;
+    bankAcc.display();  
+
+    BankAccount anotherBankAcc = static_cast<BankAccount>(foreignAcc);
+    cout << "\nExplicit cast using static_cast:" << endl;
+    anotherBankAcc.display();  
+
+    return 0;
+}

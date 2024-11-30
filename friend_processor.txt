@@ -1,0 +1,118 @@
+#include<iostream>
+#include<string>
+
+using namespace std;
+
+class Dean; 
+
+class Professor {
+    private:
+        string Course;
+        static int totalProfessors;
+        
+    public:
+    	string ProfessorName;
+        string ProfessorDesignation;
+        
+        Professor(string name, string post, string course) {
+            ProfessorName = name;
+            ProfessorDesignation = post;
+            Course = course;
+            totalProfessors++;
+        }
+        
+        inline string getCourse();
+        void changeCourse(string newCourse);
+        static int getTotalProfessors();
+        friend class Dean;
+};
+
+int Professor::totalProfessors = 0;  
+
+string Professor::getCourse() {
+    return Course;
+}
+
+void Professor::changeCourse(string newCourse) {
+    this->Course = newCourse;
+    cout << ProfessorName << " is now teaching " << Course << endl;
+}
+
+int Professor::getTotalProfessors() {
+    return totalProfessors;
+}
+
+class Student {
+    private:
+        static int stdCount;
+        
+    public:
+    	string stdName;
+        string stdRoll;
+        
+        Student(string name, string roll) {
+            stdName = name;
+            stdRoll = roll;
+            stdCount++;
+        }
+        
+        inline string getName();
+        void updateName(string newName);
+        static int getCount();
+        friend class Dean;
+};
+
+int Student::stdCount = 0; 
+
+string Student::getName() {
+    return stdName;
+}
+
+void Student::updateName(string newName) {
+    this->stdName = newName;
+    cout << "Updated name is " << stdName << endl;
+}
+
+int Student::getCount() {
+    return stdCount;
+}
+
+class Dean {
+    public:
+        void evaluateProfessor(Professor &professor);
+        void evaluateStudent(Student &student);
+};
+
+void Dean::evaluateProfessor(Professor &professor) {
+    cout << "Evaluating Professor: " << professor.ProfessorName 
+         << ", Subject: " << professor.Course << endl;
+}
+
+void Dean::evaluateStudent(Student &student) {
+    cout << "Evaluating Student: " << student.stdName 
+         << ", Roll Number: " << student.stdRoll << endl;
+}
+
+int main() {
+    Professor p1("Amar More", "Senior Prof", "Cloud Computing");
+    Professor p2("Pramod Ganjewar", "Head of Department", "Data Structure");
+    
+    Student s1("Pranav Paralkar", "177");
+    Student s2("Anush Solanki", "186");
+    
+    cout << p1.getCourse() << " is taught by " << p1.ProfessorName << endl;
+    cout << s1.getName() << " is roll number " << s1.stdRoll << endl;
+    cout<<p2.getCourse() << " is taught by " << p2.ProfessorName << endl;
+    cout<<s2.getName() << " is roll number " << s2.stdRoll << endl;
+    
+    p1.changeCourse("AI ML");
+
+    cout << "Total Professors: " << Professor::getTotalProfessors() << endl;
+    cout << "Total Students: " << Student::getCount() << endl;
+    
+    Dean dean;
+    dean.evaluateProfessor(p1);
+    dean.evaluateStudent(s1);
+    
+    return 0;
+}

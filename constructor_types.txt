@@ -1,0 +1,72 @@
+
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+class Bank{
+private:
+    string accountHolder;
+    int accountNumber;
+    double balance;
+
+public:
+    Bank(); 
+    Bank(string name, int number, double initialBalance);
+    Bank(const Bank &acc);  
+    
+	void display() const; 
+    void deposit(double amount);
+};
+
+Bank::Bank() 
+{
+    accountHolder="NaN";
+    accountNumber=0;
+    balance=0.0;
+    cout<<"Default constructor called\n";
+}
+
+Bank::Bank(string name, int number, double initialBalance) 
+{
+    accountHolder=name;
+    accountNumber=number;
+    balance=initialBalance;
+    cout<<"Parameterized constructor called"<<endl;
+}
+
+Bank::Bank(const Bank &acc) 
+{
+    accountHolder=acc.accountHolder;
+    accountNumber=acc.accountNumber;
+    balance=acc.balance;
+    cout<<"Copy constructor called"<<endl;
+}
+
+void Bank::display() const
+ {
+    cout<<"Account Holder: "<<accountHolder<<endl;
+    cout<<"Account Number: "<<accountNumber<<endl;
+    cout<<"Balance: "<<balance<<endl;
+}
+
+void Bank::deposit(double amount)
+ {
+    balance += amount;
+    cout<<"Deposited: "<<amount<<" | New Balance: "<<balance<<endl;
+}
+
+int main() {
+    Bank acc1;
+    acc1.display();
+
+    Bank acc2("std",865975, 1000.0);
+    acc2.display();
+    
+    acc2.deposit(500.0);
+
+    Bank acc3 = acc2;
+    acc3.display();
+
+    return 0;
+}

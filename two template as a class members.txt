@@ -1,0 +1,45 @@
+// two template as a class members
+#include<iostream>
+using namespace std;
+
+template <class t1,class t2>
+class Management
+{
+   public :
+   t1 name,Book,Author;
+   t2 age, Mobile_No;
+   Management(t1 Name,t1 book,t1 Writer,t2 Age,t2 Mobile)
+   {
+      name = Name;
+      Book = book;
+      Author = Writer;
+      age = Age;
+      Mobile_No = Mobile;
+   }
+   void Display() 
+   {
+       cout<<"Book Issue by :  "<<name<<endl;
+       cout<<"Book name is : "<<Book<<endl;
+       cout<<"Author of Book is : "<<Author<<endl;
+       cout<<"Age of Reader is : "<<age<<endl;
+       cout<<"Mobile number is : "<<Mobile_No;
+
+   } 
+};
+
+int main()
+{
+    string Name,Book,Author;
+    int age,No;
+
+    cout<<"Enter Name , Book Name and Author name \n";
+    cin>>Name>>Book>>Author;
+    cout<<"Enter age of Customer and Mobile no : \n";
+    cin>>age>>No;
+    Management <string,int > Mobj(Name,Book,Author,age,No);
+    Mobj.Display();
+
+
+
+    return 0;
+}

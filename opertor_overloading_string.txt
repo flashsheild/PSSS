@@ -1,0 +1,65 @@
+#include<iostream>
+#include<string>
+using namespace std;
+class stud
+{
+public:
+int rollno,prnno;
+string fname,lname,address,branch,mobno;
+stud()
+{
+rollno=0;
+prnno=0;
+fname=" ";
+lname=" ";
+address=" ";
+branch=" ";
+mobno=" ";
+}
+void read()
+{
+cout<<"Enter rollno";
+cin>>rollno;
+cout<<"Enter prn no";
+cin>>prnno;
+cout<<"Enter first name";
+cin>>fname;
+cout<<"Enter last name";
+cin>>lname;
+cout<<"Enter address";
+cin>>address;
+cout<<"Enter branch";
+cin>>branch;
+cout<<"Enter mob no";
+cin>>mobno;
+}
+stud operator + (stud s)
+{
+stud t;
+t.fname=s.fname+fname;
+t.lname=s.lname+lname;
+return t;
+}
+void display()
+{
+cout<<"\n Rollno"<<rollno;
+cout<<"\n Prn no"<<prnno;
+cout<<"\n First name"<<fname;
+cout<<"\n Last name"<<lname;
+cout<<"\n Address"<<address;
+cout<<"\n Branch"<<branch;
+cout<<"\n Mob no"<<mobno;
+}
+};
+int main()
+{
+stud h,v,b;
+v.read();
+v.display();
+b.read();
+b.display();
+h=v+b;
+cout<<"\n Concatenated First Name"<<h.fname;
+cout<<"\n Concatenated Last Name"<<h.lname;
+return 0;
+}

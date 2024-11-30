@@ -1,0 +1,97 @@
+#include <iostream>
+using namespace std;
+
+class Product {
+protected:
+    double price;
+
+public:
+    Product(double p = 0) {
+        price = p;
+    }
+
+    virtual double calculateTotalPrice() const {
+        return price;
+    }
+
+    void display() const {
+        cout << "Product Price : " << price << endl;
+    }
+};
+
+class Electronic : public Product {
+public:
+    Electronic(double p) : Product(p) {}
+
+    double calculateTotalPrice() const override {
+        return price * 1.15;
+    }
+
+    void display() const {
+        cout << "Electronic Item Price (with 15% tax) : " << calculateTotalPrice() << endl;
+    }
+};
+
+class Grocery : public Product {
+public:
+    Grocery(double p) : Product(p) {}
+
+    double calculateTotalPrice() const override {
+        return price * 0.95;
+    }
+
+    void display() const {
+        cout << "Grocery Item Price (with 5% discount) : " << calculateTotalPrice() << endl;
+    }
+};
+
+class ShoppingCart {
+private:
+    Product* items[10];
+    int count;
+
+public:
+    ShoppingCart() : count(0) {}
+
+    ShoppingCart& operator+=(Product* product) {
+        if (count < 10) {
+            items[count++] = product;
+        } else {
+            cout << "Cart is full" << endl;
+        }
+        return *this;
+    }
+
+    double calculateCartTotal() const {
+        double total = 0;
+        for (int i = 0; i < count; ++i) {
+            total += items[i]->calculateTotalPrice();
+        }
+        return total;
+    }
+
+    void displayCart() const {
+        cout << "\nShopping Cart Details:\n";
+        for (int i = 0; i < count; ++i) {
+            items[i]->display();
+        }
+        cout << "Total Cart Price : " << calculateCartTotal() << endl;
+    }
+};
+
+int main() {
+    ShoppingCart cart;
+
+    Product* item1 = new Electronic(100);
+    Product* item2 = new Grocery(50);
+
+    cart += item1;
+    cart += item2;
+
+    cart.displayCart();
+
+    delete item1;
+    delete item2;
+
+    return 0;
+}
